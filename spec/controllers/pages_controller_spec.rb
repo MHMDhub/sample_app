@@ -19,7 +19,7 @@ describe PagesController do
       get 'home'
       response.body.should_not =~ /<body>\s*<\/body>/
     end    
- 
+
   end  
 
   describe "GET 'contact'" do

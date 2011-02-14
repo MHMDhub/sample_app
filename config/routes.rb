@@ -1,13 +1,17 @@
 SampleApp::Application.routes.draw do
-  #match '/', :to => 'pages#home'
-  #match '/home', :to => 'pages#home'
-  #match '/about', :to => 'pages#about'
-  #match '/contact', :to => 'pages#contact'
+  root              :to => "pages#home"  #replaces get "pages/home" line
+  #match '/',       :to => 'pages#home'  #this is an alternative to root:to => "pages#home"
+  #match '/home',   :to => 'pages#home'
+  match '/about',   :to => 'pages#about'  #this creates a named route and thus allows us to do home_path or home_url to link to this page
+  match '/contact', :to => 'pages#contact'
+  match '/help',    :to => 'pages#help'
   
-  get "pages/home"
-  get "pages/contact"
-  get "pages/about"
   
+  
+  #get "pages/home"
+  #get "pages/contact"
+  #get "pages/about"
+  #get "pages/help"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,5 +1,7 @@
 SampleApp::Application.routes.draw do
-  get "users/new"
+  
+  resources :users
+  #get "users/new"   #no longer needed after line above is added 'resource :users'
 
   root              :to => "pages#home"  #replaces get "pages/home" line
   #match '/',       :to => 'pages#home'  #this is an alternative to root:to => "pages#home"

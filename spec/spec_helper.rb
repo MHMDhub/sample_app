@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spork'
 
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However, 
   # if you change any configuration or code from libraries loaded here, you'll
@@ -36,9 +37,13 @@ Spork.prefork do
   #Emulate initializer set_clear_dependencies_hook in
   #railties/lib/rails/application/bootstrap.rb
   ActiveSupport::Dependencies.clear
+  
   end
 end
 
+
+
 Spork.each_run do
 end
+
 

@@ -11,7 +11,7 @@ describe UsersController do
    
     describe "GET 'show'" do
                 
-         before(:each) do
+          before(:each) do
              @user = Factory(:user)  #Instead of passing it a hash with initialization values as in [Factory(:user, :password => "mypassword", :password_confirmation => "mypassword")], it by default uses those in Factories.rb
           end  
           it "should be successful" do
@@ -39,7 +39,7 @@ describe UsersController do
             get :show, :id => @user
             response.should have_selector('h1>img', :class => "gravatar")
           end
-  
+
           it "should have the right URL" do
             get :show, :id => @user
             response.should have_selector('td>a', :content => user_path(@user),
@@ -59,6 +59,54 @@ describe UsersController do
             response.should have_selector('title', :content => "Sign up")
           end
    end
-
-
+   
+   describe "POST 'create'" do
+          describe "failure" do
+            before(:each) do
+              @attr = {:name => "", :email => "", :password => "",
+                       :password_confirmation => ""  }
+            end
+            
+            it "should have the right title" do
+              post :create, :user => @attr
+              response.should have_selector('title', :content => "Sign up")
+            end
+            
+            it "should render the 'new' page" do
+              post :create, :user => @attr
+              response.should render_template('new')
+            end
+            
+            it "should not create a user" do
+            #this is tricky, because we want to post to the create action with invalid user attributes and have it not create a user in the database...the way we're going to achieve that is by using a lambda block
+              lambda do
+                post :create, :user => @attr
+              end.should_not change(User, :count)
+            end
+          end
+          
+          describe "success" do
+            before(:each) do
+              @attr = {:name => "New User", :email => "user@example.com", :password => "foobar",
+                       :password_confirmation => "foobar"  }
+            end
+          
+            it "should create a user" do
+              lambda do
+                post :create, :user => @attr
+              end.should change(User, :count).by(1)
+            end
+          
+            it "should redirect to the user show page" do
+              post :create, :user => @attr
+              response.should redirect_to(user_path(assigns(:user)))
+            end
+            
+            it "should a welcome message" do
+              post :create, :user => @attr
+              flash[:success].should =~ /welcome to the sample app/i
+            end
+          
+          end
+   end
 end

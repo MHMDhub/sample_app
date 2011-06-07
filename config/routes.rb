@@ -1,21 +1,27 @@
 SampleApp::Application.routes.draw do
-  
-  resources :users
+    
   #get "users/new"   #no longer needed after line above is added 'resource :users'
-
-  root              :to => "pages#home"  #replaces get "pages/home" line
-  #match '/',       :to => 'pages#home'  #this is an alternative to root:to => "pages#home"
+  #get "sessions/new"  #same as above...this was created automatically when session controller was created...replaced with 'resource :sessions'
+  #match '/',       :to => 'pages#home'  #this is an alternative to 'root :to => "pages#home" '
   #match '/home',   :to => 'pages#home'
-  match '/about',   :to => 'pages#about'  #this creates a named route and thus allows us to do home_path or home_url to link to this page
-  match '/contact', :to => 'pages#contact'
-  match '/help',    :to => 'pages#help'
-  match '/signup',   :to => 'users#new'
-  
-  
   #get "pages/home"
   #get "pages/contact"
   #get "pages/about"
   #get "pages/help"
+  
+  resources :users
+  resources :sessions, :only => [:new, :create, :destroy]
+  
+  root              :to => "pages#home"  #replaces get "pages/home" line
+  
+  match '/about',   :to => 'pages#about'  #this creates a named route and thus allows us to do home_path or home_url to link to this page
+  match '/contact', :to => 'pages#contact'
+  match '/help',    :to => 'pages#help'
+  match '/signup',  :to => 'users#new'
+  match '/signin',  :to => 'sessions#new'
+  match '/signout',  :to => 'sessions#destroy'
+  
+  
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

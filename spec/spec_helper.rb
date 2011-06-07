@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'spork'
-
+require 'database_cleaner'
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However, 
@@ -31,7 +31,21 @@ Spork.prefork do
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false #true  #changed to false for DatabaseCleaners #Also change to false if running selinium
+  
+  #Added this for database_cleaner
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation #:transaction  #Changed from 'transaction' to 'truncation'...also change to 'truncation' if using selinium
+    #DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
   
   ###Part of a Spork hack.  See http://bit.ly/arY19y
   #Emulate initializer set_clear_dependencies_hook in
@@ -45,5 +59,4 @@ end
 
 Spork.each_run do
 end
-
 

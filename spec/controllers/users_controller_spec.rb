@@ -6,7 +6,7 @@ Factory.find_definitions
 
 
 describe UsersController do
-  render_views
+  render_views  #we do 'render_views' everytime we use have_selector tag
 
    
     describe "GET 'show'" do

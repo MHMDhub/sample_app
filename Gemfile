@@ -16,4 +16,5 @@ group :test do
   gem 'spork', '0.8.4'
   #gem 'factory_girl_rails', '1.0'
   gem 'factory_girl_rails'
+  gem "database_cleaner", "~> 0.6.7"
 end

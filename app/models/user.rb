@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110508091509
+# Schema version: 20110510014545
 #
 # Table name: users
 #
@@ -9,7 +9,9 @@
 #  created_at         :datetime
 #  updated_at         :datetime
 #  encrypted_password :string(255)
+#  salt               :string(255)
 #
+
 require 'digest'
 class User < ActiveRecord::Base
   attr_accessor   :password   #We decided to use an encrypted password instead of adding a column for password. This is a virtual attribute created by attr_accessor...it creates the getter/setter attributes that will allow us to manipulate password and do thing like User.password = something etc
@@ -40,8 +42,15 @@ class User < ActiveRecord::Base
   class << self
     def authenticate(email, submitted_password)
         user = User.find_by_email(email)
-        return nil if user.nil?
-        return user if user.has_password?(submitted_password)
+        #refactoring of next to lines to 3rd line
+        #return nil if user.nil?
+        #return user if user.has_password?(submitted_password)
+        (user && user.has_password?(submitted_password)) ? user : nil
+    end
+    
+    def authenticate_with_salt(id, cookie_salt)
+      user = find_by_id(id)
+      (user && user.salt == cookie_salt) ? user : nil   #return user if user exists AND user.salt matches cookie_salt, else return nil
     end
   end
   

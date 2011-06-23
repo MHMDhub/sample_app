@@ -52,10 +52,15 @@ Spork.prefork do
   #railties/lib/rails/application/bootstrap.rb
   ActiveSupport::Dependencies.clear
   
+  #Note: This test_sign_in method does not work for integration tests, there is a way to create a helper method that would work for integration tests (exercise in the book)
+  def test_sign_in(user)
+    #controller.current_user = user #This worked fine, but for some reason we could not use "current_user = nil" without "self" in the sign_out method in sessions_helper
+    #A fix was to reuse the method signin in the session_controller as follows
+    controller.sign_in(user)  #see sessions_helper comments in sign_out on how this helped fix the problem with the use of "current_user= nil" instead of "self.current_user = nil"
+  end
+    
   end
 end
-
-
 
 Spork.each_run do
 end

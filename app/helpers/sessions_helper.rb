@@ -22,7 +22,12 @@ module SessionsHelper
     !current_user.nil?   #bolean signed_in? is true when current_user is NOT nil
   end
   
-  
+  def sign_out
+    cookies.delete(:remember_token)
+    #self.current_user = nil     #We first had to used the full "self.current_user = nil" because for some reason "current_user = nil" did not work with the tests
+    current_user = nil        #we can now use this without (self) after we reused the sign_in method in spec_helper...see comments in spec_helper
+  end
+    
   private
   
     def user_from_remember_token

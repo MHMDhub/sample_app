@@ -15,6 +15,7 @@ class UsersController < ApplicationController
       @user = User.new(params[:user])
       if @user.save
         #flash[:success] = "Welcome to the Sample App!"
+        sign_in @user  #user is signed in when they sign up/Some apps have users sign in after sign up as a separate action
         redirect_to @user, :flash => {:success => "Welcome to the Sample App!"}
       else
         @title = "Sign up"

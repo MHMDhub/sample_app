@@ -60,6 +60,19 @@ describe SessionsController do
       
     end
   end
+  
+  #Next we would create the destroy method is seesions_controller, but before that we need to create a test
+  describe "DELETE 'destroy'" do
+    it "should sign a user out" do
+        test_sign_in(Factory(:user))  #defined in spec_helper so that its' not available everywhere
+        delete :destroy
+        controller.should_not be_signed_in
+        response.should redirect_to(root_path)  #we could have created a separate test for this redirect as in the above "should redirect...", and many people feel strongly about that, but it seems like an overkill in this instance 
+    end
+  end
+  
+  
+  
 end
 
 
